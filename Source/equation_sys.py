@@ -124,7 +124,7 @@ class eqn_sys:
             self.transient_solve(mat_man, cond_man, bc_man, reac_man, t_int)
 
             # Update temperature arrays
-            t_int.post_solve(self.T_sol)
+            t_int.post_solve(self.T_sol, mat_man)
 
             # Save data
             time_data_st = time.time()
@@ -133,9 +133,10 @@ class eqn_sys:
 
             step_time.append(time.time() - start_time)
             if (t_int.n_step%self.print_every == 0) & self.print_progress:
-                print('{:0.1f}%\tVol Avg T: {:0.1f} K'.format(
+                print('{:0.1f}%\tVol Avg T: {:0.1f} K, dt: {:0.2e}'.format(
                     100.*t_int.tot_time/t_int.end_time,
-                    np.sum(t_int.T_m1*self.dx_arr)/np.sum(self.dx_arr)))
+                    np.sum(t_int.T_m1*self.dx_arr)/np.sum(self.dx_arr), 
+                    t_int.dt))
 
             if (t_int.n_step >= t_int.max_steps):
                 print('Reached the maximum number of time steps. Exiting.')

@@ -180,6 +180,19 @@ class input_parser:
         # Set max steps if not provided
         if 'Max Steps' not in time_dict.keys():
             time_dict['Max Steps'] = 1e7
+
+
+        # ensure that either 'Max CFL'  and/or 'dt' is specified for transient runs
+        if time_dict['Solution Mode'] != 'Steady' and \
+           'Max CFL' not in time_dict.keys() and \
+           'dt' not in time_dict.keys():
+
+            err_str = 'Either (or both) of "dt" and "Max CFL" must be specified for transient runs'
+            raise ValueError(err_str)
+
+        # Set max steps if not provided
+        if 'Max CFL' not in time_dict.keys():
+            time_dict['Max CFL'] = np.inf
         
         # Set accuracy order
         if 'Steady' in time_dict['Solution Mode']:

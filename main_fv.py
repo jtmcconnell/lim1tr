@@ -51,7 +51,7 @@ class lim1tr_model:
         eqn_sys.init_linear_solver()
 
         # Initialize time integrator
-        t_int = time_integrator.time_int(grid_man, time_opts)
+        t_int = time_integrator.time_int(grid_man, mat_man, time_opts)
 
         # Solve system
         eqn_sys.solve(mat_man, cond_man, bc_man, reac_man, data_man, t_int)
